@@ -33,6 +33,12 @@ class Register extends Component {
     }
   }
 
+  componentWillMount() {
+    if (this.props.auth.isAuthenticated) {
+      // Maybe logout user
+    }
+  }
+
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
