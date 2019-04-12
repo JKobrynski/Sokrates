@@ -34,8 +34,8 @@ class App extends Component {
     };
   }
 
-  // TODO: Navbar component (view depending on wheather the user is logged in or not)
-  // TODO: Logged in user label on the Navbar
+  // TODO: Refreshing after adding new note
+  // TODO: NotesFeed component
 
   render() {
     return (

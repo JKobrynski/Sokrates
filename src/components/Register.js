@@ -131,8 +131,8 @@ Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
   createSession: PropTypes.func.isRequired,
   getSessionInfo: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired
+  // errors: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({

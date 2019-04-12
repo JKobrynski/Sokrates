@@ -9,6 +9,8 @@ import TextAreaFieldGroup from "./common/TextAreaFieldGroup";
 import TextFieldGroup from "./common/TextFieldGroup";
 import InputGroup from "./common/InputGroup";
 
+import Note from "./Note";
+
 class Homepage extends Component {
   constructor() {
     super();
@@ -51,12 +53,15 @@ class Homepage extends Component {
     this.props.getNotes(this.props.auth.session, after, volume);
   }
 
-  componentDidMount() {
-    this.getAllNotes(null, null);
+  async componentDidMount() {
+    await this.getAllNotes(null, null);
   }
 
   render() {
     const { errors } = this.state;
+    const { notes } = this.props.note;
+
+    const notesFeed = notes.map(note => <Note key={note.name} note={note} />);
 
     return (
       <div className="homepage">
@@ -84,9 +89,10 @@ class Homepage extends Component {
                 <input
                   type="submit"
                   value="Dodaj"
-                  className="btn btn-info btn-block mt-4"
+                  className="btn btn-info btn-block mt-4 mb-4 font-weight-bold"
                 />
               </form>
+              {notesFeed}
             </div>
           </div>
         </div>

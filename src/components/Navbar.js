@@ -35,7 +35,7 @@ class Navbar extends Component {
             <ul className="navbar-nav ml-auto">
               {this.props.auth.isAuthenticated ? (
                 <button onClick={this.onClick} className="btn btn-warning">
-                  Wyloguj
+                  <strong>Wyloguj</strong>
                 </button>
               ) : null}
             </ul>
