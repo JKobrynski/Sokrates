@@ -34,7 +34,7 @@ class Navbar extends Component {
           <div className="collapse navbar-collapse" id="mobile-nav">
             <ul className="navbar-nav ml-auto">
               {this.props.auth.isAuthenticated ? (
-                <button onClick={this.onClick} className="btn btn-warning">
+                <button onClick={this.onClick} className="btn btn-primary">
                   <strong>Wyloguj</strong>
                 </button>
               ) : null}

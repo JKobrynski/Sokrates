@@ -5,11 +5,7 @@ import PropTypes from "prop-types";
 import { logoutUser, getSession } from "../actions/authActions";
 import { createNote, getNotes, getPageOfNotes } from "../actions/noteActions";
 
-import TextAreaFieldGroup from "./common/TextAreaFieldGroup";
-import TextFieldGroup from "./common/TextFieldGroup";
-
 import NotesFeed from "./NotesFeed";
-import NoteForm from "./NoteForm";
 
 class Homepage extends Component {
   constructor() {
@@ -85,7 +81,6 @@ class Homepage extends Component {
           <div className="row">
             <div className="col-md-8 m-auto">
               <h1 className="display-6 text-center mb-3">Notatki</h1>
-              <NoteForm />
               {noteContent}
             </div>
           </div>
