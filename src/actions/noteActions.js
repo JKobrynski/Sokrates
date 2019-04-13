@@ -14,6 +14,8 @@ export const createNote = (note, session) => dispatch => {
           type: GET_ERRORS,
           payload: response.message
         });
+      } else {
+        dispatch(getNotes(session, null, null));
       }
     });
 };
@@ -24,6 +26,27 @@ export const getNotes = (session, after, volume) => dispatch => {
   client
     .withSession(session.session_id, session.session_key)
     .executeSingle(new NoteList())
+    .then(response => {
+      if (response.status === 200) {
+        dispatch({
+          type: GET_NOTES,
+          payload: response.data.results
+        });
+      } else {
+        dispatch({
+          type: GET_ERRORS,
+          payload: response.message
+        });
+      }
+    });
+};
+
+// Get next/previous page of notes
+export const getPageOfNotes = (session, after, volume) => dispatch => {
+  dispatch(setNotesLoading());
+  client
+    .withSession(session.session_id, session.session_key)
+    .executeSingle(new NoteList(after, volume))
     .then(response => {
       if (response.status === 200) {
         dispatch({

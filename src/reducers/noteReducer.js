@@ -1,7 +1,7 @@
 import { NoteTake, NoteList } from "../rekrClient";
 import isEmpty from "../is-empty";
 
-import { GET_NOTES } from "../actions/types";
+import { GET_NOTES, ADD_NOTE } from "../actions/types";
 
 const initialState = {
   notes: [],
@@ -16,6 +16,9 @@ export default function(state = initialState, action) {
         notes: action.payload,
         loading: false
       };
+    }
+    case ADD_NOTE: {
+      return state;
     }
     default: {
       return state;

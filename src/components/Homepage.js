@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import { logoutUser, getSession } from "../actions/authActions";
-import { createNote, getNotes } from "../actions/noteActions";
+import { createNote, getNotes, getPageOfNotes } from "../actions/noteActions";
 
 import TextAreaFieldGroup from "./common/TextAreaFieldGroup";
 import TextFieldGroup from "./common/TextFieldGroup";
-import InputGroup from "./common/InputGroup";
 
-import Note from "./Note";
+import NotesFeed from "./NotesFeed";
+import NoteForm from "./NoteForm";
 
 class Homepage extends Component {
   constructor() {
@@ -57,11 +57,24 @@ class Homepage extends Component {
     await this.getAllNotes(null, null);
   }
 
+  onNextClick(e) {
+    this.props.getPageOfNotes(this.props.auth.session, 1, 3);
+  }
+
+  onPrevClick(e) {
+    this.props.getPageOfNotes(this.props.auth.session, 0, 3);
+  }
+
   render() {
     const { errors } = this.state;
-    const { notes } = this.props.note;
+    const { notes, loading } = this.props.note;
+    let noteContent;
 
-    const notesFeed = notes.map(note => <Note key={note.name} note={note} />);
+    if (notes === null || loading) {
+      noteContent = <h1>Loading...</h1>;
+    } else {
+      noteContent = <NotesFeed notes={notes} />;
+    }
 
     return (
       <div className="homepage">
@@ -72,27 +85,8 @@ class Homepage extends Component {
           <div className="row">
             <div className="col-md-8 m-auto">
               <h1 className="display-6 text-center mb-3">Notatki</h1>
-              <form onSubmit={this.onSubmit}>
-                <TextFieldGroup
-                  placeholder="Tytuł"
-                  name="title"
-                  value={this.state.title}
-                  onChange={this.onChange}
-                />
-                <TextAreaFieldGroup
-                  placeholder="Treść"
-                  name="body"
-                  value={this.state.body}
-                  onChange={this.onChange}
-                  info="Wprowadź treść notatki"
-                />
-                <input
-                  type="submit"
-                  value="Dodaj"
-                  className="btn btn-info btn-block mt-4 mb-4 font-weight-bold"
-                />
-              </form>
-              {notesFeed}
+              <NoteForm />
+              {noteContent}
             </div>
           </div>
         </div>
@@ -105,8 +99,7 @@ Homepage.propTypes = {
   auth: PropTypes.object.isRequired,
   note: PropTypes.object.isRequired,
   createNote: PropTypes.func.isRequired,
-  getNotes: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired
+  getNotes: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
