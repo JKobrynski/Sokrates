@@ -6,11 +6,12 @@ import { connect } from "react-redux";
 import TextFieldGroup from "./common/TextFieldGroup";
 
 // Import funkcji
-import { registerUser, logoutUser } from "../actions/authActions";
+import { createSession, logoutUser } from "../actions/authActions";
 
-class Register extends Component {
+class Login extends Component {
   constructor() {
     super();
+
     this.state = {
       email: "",
       password: "",
@@ -48,16 +49,16 @@ class Register extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const newUser = {
+    const user = {
       email: this.state.email,
       password: this.state.password
     };
 
-    this.props.registerUser(newUser, this.props.history);
+    this.props.createSession(user.email, user.password);
   }
 
-  onLoginClick(e) {
-    this.props.history.push("/");
+  onRegisterClick(e) {
+    this.props.history.push("/register");
   }
 
   render() {
@@ -69,7 +70,7 @@ class Register extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-8 m-auto">
-                <h1 className="display-4 text-center">Register</h1>
+                <h1 className="display-4 text-center">Login</h1>
                 <form onSubmit={this.onSubmit}>
                   {errors.length > 0 ? (
                     <div className="alert alert-danger mt-3 mb-3">{errors}</div>
@@ -95,8 +96,8 @@ class Register extends Component {
                 </form>
                 <input
                   type="button"
-                  value="Mam juz konto"
-                  onClick={this.onLoginClick.bind(this)}
+                  value="Nie mam jeszcze konta"
+                  onClick={this.onRegisterClick.bind(this)}
                   className="btn btn-secondary btn-block mt-3 font-weight-bold"
                 />
               </div>
@@ -108,8 +109,8 @@ class Register extends Component {
   }
 }
 
-Register.propTypes = {
-  registerUser: PropTypes.func.isRequired,
+Login.propTypes = {
+  createSession: PropTypes.func.isRequired,
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -121,5 +122,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { registerUser, logoutUser }
-)(Register);
+  { createSession, logoutUser }
+)(Login);

@@ -1,10 +1,14 @@
+// Komponent strony domowej widocznej tylko po zalogowaniu
+
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { logoutUser, getSession } from "../actions/authActions";
-import { createNote, getNotes, getPageOfNotes } from "../actions/noteActions";
+// Import akcji
+import { createNote, getNotes } from "../actions/noteActions";
 
+// Import komponentu wyświetlającego notatki uzytkownika
+// i formularz tworzący notatki
 import NotesFeed from "./NotesFeed";
 
 class Homepage extends Component {
@@ -28,37 +32,33 @@ class Homepage extends Component {
   onSubmit(e) {
     e.preventDefault();
 
+    // Obiekt nowej notatki
     const newNote = {
       title: this.state.title,
       body: this.state.body
     };
 
+    // Wykonanie funkcji zapisującej notatkę
     this.props.createNote(newNote, this.props.auth.session);
   }
 
   componentWillReceiveProps(nextProps) {
+    // Przeniesienie uzytkownika na strone startowa
+    // w przypadku gdy nie ma autoryzacji
     if (!nextProps.auth.isAuthenticated) {
       this.props.history.push("/");
     }
-    // if (nextProps.errors) {
-    //   this.setState({ errors: nextProps.errors });
-    // }
   }
 
-  getAllNotes(after, volume) {
-    this.props.getNotes(this.props.auth.session, after, volume);
+  // Metoda (wykonuje funkcję) pobierająca notatki
+  getAllNotes() {
+    this.props.getNotes(this.props.auth.session);
   }
 
-  async componentDidMount() {
-    await this.getAllNotes(null, null);
-  }
-
-  onNextClick(e) {
-    this.props.getPageOfNotes(this.props.auth.session, 1, 3);
-  }
-
-  onPrevClick(e) {
-    this.props.getPageOfNotes(this.props.auth.session, 0, 3);
+  // Pobranie wszystkich notatek w momencie
+  // załadowania komponentu
+  componentDidMount() {
+    this.getAllNotes();
   }
 
   render() {
@@ -66,6 +66,10 @@ class Homepage extends Component {
     const { notes, loading } = this.props.note;
     let noteContent;
 
+    // Jeśli notatki są w stanie loading (są w trakcie pobierania z API)
+    // wyswietlenie "Loading"
+    // Jeśli notatki zostały juz pobrane, przekazanie ich do komponentu,
+    // który je wyświetla
     if (notes === null || loading) {
       noteContent = <h1>Loading...</h1>;
     } else {
@@ -75,6 +79,7 @@ class Homepage extends Component {
     return (
       <div className="homepage">
         <div className="container">
+          {/* Wyswietlenie błędów (jeśli istnieja) */}
           {errors.length > 0 ? (
             <div className="alert alert-danger mt-3 mb-3">{errors}</div>
           ) : null}
@@ -105,5 +110,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logoutUser, getSession, createNote, getNotes }
+  { createNote, getNotes }
 )(Homepage);

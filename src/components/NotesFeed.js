@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
+// Import podkomponentów potrzebnych do stworzenia formularza
 import TextAreaFieldGroup from "./common/TextAreaFieldGroup";
 import TextFieldGroup from "./common/TextFieldGroup";
 
+// Import funkcji tworzącej notatkę
 import { createNote } from "../actions/noteActions";
 
 class NotesFeed extends Component {
@@ -33,12 +35,15 @@ class NotesFeed extends Component {
       body: this.state.body
     };
 
+    // Walidacja danych wejściowych
     if (!newNote.title) {
       this.setState({ errors: "Wprowadź tytuł notatki" });
     } else if (!newNote.body) {
       this.setState({ errors: "Wprowadź treść notatki" });
     } else {
+      // Utworzenie nowej notatki w przypadku, gdy nie wystąpiły błędy
       this.props.createNote(newNote, this.props.auth.session);
+      // Wyczyszczenie pól formularza
       this.setState({
         title: "",
         body: ""
@@ -46,17 +51,21 @@ class NotesFeed extends Component {
     }
   }
 
+  // "Nasłuchiwanie" na otrzymanie błędów
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
   }
 
+  // Obługa kliknięcia w przycisk "Edytuj"
   onEditClick(noteName, noteText) {
     this.setState({
       title: noteName,
       body: noteText
     });
+    // Przesunięcie widoku na samą górę strony
+    // aby ukazał się formularz do edycji
     window.scrollTo(0, 0);
   }
 
@@ -64,8 +73,7 @@ class NotesFeed extends Component {
     const { notes } = this.props;
     const { errors } = this.state;
 
-    // return notes.map(note => <Note key={note.name} note={note} />);
-
+    // Zmapowanie kazdej notatki do indywidualnego widoku
     const notesFeed = notes.map(note => (
       <div
         className="card mb-3"
@@ -93,6 +101,7 @@ class NotesFeed extends Component {
 
     return (
       <div>
+        {/* Sprawdzenie czy istnieją jakieś błędy */}
         {errors.length > 0 ? (
           <div className="alert alert-danger mt-3 mb-3">{errors}</div>
         ) : null}

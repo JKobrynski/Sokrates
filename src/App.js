@@ -1,52 +1,45 @@
 import React, { Component } from "react";
 import "./App.css";
-// import { CapiClient, UserSignup } from "./rekrClient";
 
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import { setSession, setCurrentUser } from "./actions/authActions";
 
 import Register from "./components/Register";
 import Homepage from "./components/Homepage";
 import Navbar from "./components/Navbar";
+import Login from "./components/Login";
 
 import { Provider } from "react-redux";
 import store from "./store";
 
-// Check for session
+// Sprawdź, czy w localStorage są
+// zapisane dane o biezącej sesji
 if (localStorage.session) {
-  // Set session and is authenticated
+  // Jeśli w lcoalStorage są zapisane dane o sesji
+  // zapisz je w Reduxie
   store.dispatch(setSession(JSON.parse(localStorage.session)));
 }
 
-// Check for user
+// Sprawdź czy w localStorage są
+// zapisane dane o biezacym uzytkowniku
 if (localStorage.user) {
-  // Set user
+  // Jeśli w localStorage są zapisane dane o uzytkowniku
+  // zapisz je w Reduxie
   store.dispatch(setCurrentUser(JSON.parse(localStorage.user)));
 }
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      client: {},
-      userId: ""
-    };
-  }
-
-  // TODO: Refreshing after adding new note
-  // TODO: NotesFeed component
-
   render() {
     return (
+      // Zapewnienie wszystkim componentom jednego store
       <Provider store={store}>
         <Router>
           <div className="App">
             <Navbar />
-            <Route exact path="/" component={Register} />
-            <div className="container">
-              <Route exact path="/home" component={Homepage} />
-            </div>
+            <Route exact path="/" component={Login} />
+            <Route exact path="/home" component={Homepage} />
+            <Route exact path="/register" component={Register} />
           </div>
         </Router>
       </Provider>

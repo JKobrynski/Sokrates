@@ -8,17 +8,18 @@ import {
   SET_SESSION
 } from "./types";
 
-// Register new user
+// Stwórz nowe konto
 export const registerUser = (userData, history) => dispatch => {
   dispatch(clearErrors());
   client
     .executeSingle(new UserSignup(userData.email, userData.password))
     .then(response => {
       if (response.status === 200) {
-        console.log(`user id: ${response.data.user_id}`);
+        // W przypadku utworzenia nowego konta przekierowanie
+        // do formularza logowania
+        history.push("/");
       } else {
-        // TODO: dispatch
-        console.log(`error: ${response.status} ${response.message}`);
+        // Zapisz błędy zwrócone przez API
         dispatch({
           type: GET_ERRORS,
           payload: response.message
@@ -27,22 +28,32 @@ export const registerUser = (userData, history) => dispatch => {
     });
 };
 
-// Create session
+// Stwórz nową sesję
 export const createSession = (email, password) => dispatch => {
   dispatch(clearErrors());
+
   client
     .withLogin(email, password)
     .executeSingle(new SessionCreate())
     .then(response => {
       if (response.status === 200) {
+        // Wykonanie akcji SET_SESSION dla nowo utworzonej sesji
+        // i zapisanie jej
         dispatch(setSession(response.data));
-        // Save session info to local storage
+
+        // Wyciągnięcie sesji z danych zwróconych przez API
         const session = response.data;
-        // Set session to ls
+
+        // Zapisanie sesji do localStorage, aby była zapamiętana
+        // między odświezeniami strony
         localStorage.setItem("session", JSON.stringify(session));
-        // Set current user with getSession func
+
+        // Wykonanie funkcji getSession dla nowo utworzonej sesji
+        // w celu zapisania danych biezącego uzytkownika i sesji
+        // Potrzebne m.in. do wyświetlenia etykiety uzytkownika w Navbarze
         dispatch(getSession(session));
       } else {
+        // Zapis błędów zwróconych przez api
         dispatch({
           type: GET_ERRORS,
           payload: response.message
@@ -51,7 +62,7 @@ export const createSession = (email, password) => dispatch => {
     });
 };
 
-// Get session info
+// Pobranie informacji o aktualnej sesji
 export const getSessionInfo = session => dispatch => {
   client
     .withSession(session.session_id, session.session_key)
@@ -60,6 +71,7 @@ export const getSessionInfo = session => dispatch => {
       if (response.status === 200) {
         console.log(response);
       } else {
+        // Zapis błędów zwróconych przez API
         dispatch({
           type: GET_ERRORS,
           payload: response.message
@@ -68,7 +80,7 @@ export const getSessionInfo = session => dispatch => {
     });
 };
 
-// Set session
+// Ustawienie obecnej sesji (Wykonanie SET_SESSION)
 export const setSession = session => {
   return {
     type: SET_SESSION,
@@ -76,17 +88,22 @@ export const setSession = session => {
   };
 };
 
-// Get session info
+// Pobranie informacji o biezącej sesji
 export const getSession = session => dispatch => {
   client
     .withSession(session.session_id, session.session_key)
     .executeSingle(new SessionInfo())
     .then(response => {
       if (response.status === 200) {
+        // Wykonanie fukcji setCurrentUser zapisującej informacje
+        // o biezącym uzytkowniku
         dispatch(setCurrentUser(response.data.user));
-        // Save user to local storage
+
+        // Zapisanie danych o biezącym uzytkowniku do localStorage
+        // w celu zachowania tych danych między odświezeniami strony
         localStorage.setItem("user", JSON.stringify(response.data.user));
       } else {
+        // Zapisanie błędów zwróconych przez API
         dispatch({
           type: GET_ERRORS,
           payload: response.message
@@ -95,7 +112,7 @@ export const getSession = session => dispatch => {
     });
 };
 
-// Set current user
+// Ustawienie biezącego uzytkownika
 export const setCurrentUser = user => {
   return {
     type: SET_CURRENT_USER,
@@ -103,19 +120,22 @@ export const setCurrentUser = user => {
   };
 };
 
-// Logout user (Set session to empty object)
+// Wyloguj uzytkownika (+ ustawienie sesji jako {})
 export const logoutUser = () => dispatch => {
-  // Remove session data from local storage
+  // Usunięcie danych o biezącej sesji z localStorage
   localStorage.removeItem("session");
-  // Set session to {}
+
+  // Zapisanie biezacej sesji jako pusty obiekt w Redux
   dispatch(setSession({}));
-  // Remove user from local storage
+
+  // Usunięcie danych o uytkowniku z localStorage
   localStorage.removeItem("user");
-  // Set current user to {}
+
+  // Zapisanie biezącego uzytkownika jako pusty obiekt w Redux
   dispatch(setCurrentUser({}));
 };
 
-// Clear errors
+// Wyczyszczenie błędów
 export const clearErrors = () => {
   return {
     type: CLEAR_ERRORS

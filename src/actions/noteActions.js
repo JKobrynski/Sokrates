@@ -1,38 +1,46 @@
 import { NoteTake, NoteList } from "../rekrClient";
 import client from "../client";
 
-import { ADD_NOTE, GET_NOTES, GET_ERRORS, NOTES_LOADING } from "./types";
+import { GET_NOTES, GET_ERRORS, NOTES_LOADING } from "./types";
 
-// Create or edit note
+// Stwórz lub edytuj notatkę
 export const createNote = (note, session) => dispatch => {
   client
     .withSession(session.session_id, session.session_key)
     .executeSingle(new NoteTake(note.title, note.body))
     .then(response => {
       if (response.status !== 204) {
+        // Zapisanie błędów zwróconych przez API
         dispatch({
           type: GET_ERRORS,
           payload: response.message
         });
       } else {
+        // Wykonanie funkcji getNotes, pobierającej notatki
+        // stworzone przez biezącego uzytkownika
         dispatch(getNotes(session, null, null));
       }
     });
 };
 
-// Fetch all notes
-export const getNotes = (session, after, volume) => dispatch => {
+// Pobranie z api notatek uzytkownika
+export const getNotes = session => dispatch => {
+  // Ustawienie "ładowania" notatek w oczekiwaniu
+  // na odpowiedź z API
   dispatch(setNotesLoading());
+
   client
     .withSession(session.session_id, session.session_key)
     .executeSingle(new NoteList())
     .then(response => {
       if (response.status === 200) {
+        // Zapisanie pobranych notatek w Redux
         dispatch({
           type: GET_NOTES,
           payload: response.data.results
         });
       } else {
+        // Zapisanie błędów zwróconych przez API
         dispatch({
           type: GET_ERRORS,
           payload: response.message
@@ -41,28 +49,7 @@ export const getNotes = (session, after, volume) => dispatch => {
     });
 };
 
-// Get next/previous page of notes
-export const getPageOfNotes = (session, after, volume) => dispatch => {
-  dispatch(setNotesLoading());
-  client
-    .withSession(session.session_id, session.session_key)
-    .executeSingle(new NoteList(after, volume))
-    .then(response => {
-      if (response.status === 200) {
-        dispatch({
-          type: GET_NOTES,
-          payload: response.data.results
-        });
-      } else {
-        dispatch({
-          type: GET_ERRORS,
-          payload: response.message
-        });
-      }
-    });
-};
-
-// Set notes loading
+// Ustawienie "ładowania" notatek
 export const setNotesLoading = () => {
   return {
     type: NOTES_LOADING
