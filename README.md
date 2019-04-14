@@ -6,8 +6,8 @@ W terminalu wpisz:
 
 ### `git clone https://github.com/JKobrynski/Sokrates.git`
 
-Poczekaj, az repozytorium się skopiuje.<br>
-Następnie w konsoli przejdź do nowo utworzonego folderu i wpisz:
+Poczekaj, az repozytorium się pobierze.<br>
+Następnie w terminalu przejdź do nowo utworzonego folderu i wpisz:
 
 ### `npm install`
 
