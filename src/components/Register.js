@@ -69,7 +69,7 @@ class Register extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-8 m-auto">
-                <h1 className="display-4 text-center">Register</h1>
+                <h1 className="display-4 text-center mb-3">Register</h1>
                 <form onSubmit={this.onSubmit}>
                   {errors.length > 0 ? (
                     <div className="alert alert-danger mt-3 mb-3">{errors}</div>
