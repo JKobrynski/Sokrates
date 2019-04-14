@@ -3,7 +3,7 @@ import "./App.css";
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import { setSession, setCurrentUser } from "./actions/authActions";
+import { setSession, setCurrentUser, logoutUser } from "./actions/authActions";
 
 import Register from "./components/Register";
 import Homepage from "./components/Homepage";
@@ -19,6 +19,29 @@ if (localStorage.session) {
   // Jeśli w lcoalStorage są zapisane dane o sesji
   // zapisz je w Reduxie
   store.dispatch(setSession(JSON.parse(localStorage.session)));
+
+  // Sprawdź czy token się przedawnił
+  const { expires_at } = JSON.parse(localStorage.getItem("session"));
+  var expireTime = expires_at.split("T")[1].split(".")[0];
+  var now = new Date();
+
+  // Przekształcenie czasu przedawnienia sesji (i obecnego czasu)
+  // na tablicę [ godziny, minuty, sekundy ]
+  var [currentH, currentMin, currentSec] = now.toLocaleTimeString().split(":");
+  var [expireH, expireMin, expireSec] = expireTime.split(":");
+
+  // Sprawdzenie czy obecny czas jest "późniejszy" niz
+  // czas przedawnienia sesji
+  if (parseInt(currentH - 2) > parseInt(expireH)) {
+    store.dispatch(logoutUser());
+    alert("Sesja dobiegła końca!");
+  } else if (
+    parseInt(currentH) - 2 === parseInt(expireH) &&
+    parseInt(currentMin) > parseInt(expireMin)
+  ) {
+    store.dispatch(logoutUser());
+    alert("Sesja dobiegła końca!");
+  }
 }
 
 // Sprawdź czy w localStorage są
