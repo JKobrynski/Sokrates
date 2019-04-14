@@ -27,26 +27,26 @@ Ewentualne błędy zostaną wyświetlone w konsoli.
 
 #### `1. Widok logowania z możliwością rejestracji nowego konta`
 
-** Czas rozwiązania: 45 minut**
+**Czas rozwiązania: 45 minut**
 
 #### `2. Pamiętanie zalogowanej sesji między odświeżeniami strony`
 
-** Czas rozwiązania: 20 minut**
+**Czas rozwiązania: 20 minut**
 
 #### `3. Pusty widok po zalogowaniu z paskiem z etykietą zalogowanego użytkownika i przyciskiej "Wyloguj" zapominającym o aktualnej sesji`
 
-** Czas rozwiązania: 45 minut**
+**Czas rozwiązania: 45 minut**
 
 #### `4. Prezentacja błędów zwróconych przez API`
 
-** Czas rozwiązania: 30 minut**
+**Czas rozwiązania: 30 minut**
 
 ### Zadanie dodatkowe
 
 #### `1. Widok po zalogowaniu powinien prezentować paginowaną listę notatek`
 
-** Czas rozwiązania: 1 godzina**
+**Czas rozwiązania: 1 godzina**
 
 #### `2. Dodawanie, usuwanie i edycja notatek`
 
-** Czas rozwiązania: 1 godzina**
+**Czas rozwiązania: 1 godzina**
