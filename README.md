@@ -21,32 +21,32 @@ Otwórz [http://localhost:3000](http://localhost:3000) aby zobaczyć ją w przeg
 Strona zostanie odświezona, gdy edytujesz kod.<br>
 Ewentualne błędy zostaną wyświetlone w konsoli.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
 ## Proces tworzenia aplikacji
 
 ### Zadanie podstawowe
 
 #### `1. Widok logowania z możliwością rejestracji nowego konta`
 
-**: Czas rozwiązania: 1 godzina**
+**: Czas rozwiązania: 45 minut**
 
 #### `2. Pamiętanie zalogowanej sesji między odświeżeniami strony`
 
-**: Czas rozwiązania: 1 godzina**
+**: Czas rozwiązania: 20 minut**
 
 #### `3. Pusty widok po zalogowaniu z paskiem z etykietą zalogowanego użytkownika i przyciskiej "Wyloguj" zapominającym o aktualnej sesji`
 
-**: Czas rozwiązania: 1 godzina**
+**: Czas rozwiązania: 45 minut**
 
 #### `4. Prezentacja błędów zwróconych przez API`
 
-**: Czas rozwiązania: 1 godzina**
+**: Czas rozwiązania: 30 minut**
 
 ### Zadanie dodatkowe
+
+#### `1. Widok po zalogowaniu powinien prezentować paginowaną listę notatek`
+
+**: Czas rozwiązania: 1 godzina**
+
+#### `2. Dodawanie, usuwanie i edycja notatek`
+
+**: Czas rozwiązania: 1 godzina**
